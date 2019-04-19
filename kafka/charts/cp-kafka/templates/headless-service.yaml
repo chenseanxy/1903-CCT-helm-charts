@@ -8,9 +8,11 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  type: LoadBalancer
   ports:
     - port: 9092
       name: broker
+      targetPort: 9092
   clusterIP: None
   selector:
     app: {{ template "cp-kafka.name" . }}
