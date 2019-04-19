@@ -8,11 +8,11 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: cc-http
       port: {{ .Values.serviceHttpPort }}
-      nodePort: {{ .Values.serviceHttpPort }}
+      targetPort: {{ .Values.serviceHttpPort }}
   selector:
     app: {{ template "cp-control-center.name" . }}
     release: {{ .Release.Name }}

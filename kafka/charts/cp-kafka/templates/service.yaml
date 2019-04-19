@@ -12,7 +12,7 @@ spec:
   ports:
     - port: 9092
       name: broker
-      nodePort: 9092
+      targetPort: 9092
   selector:
     app: {{ template "cp-kafka.name" . }}
     release: {{ .Release.Name }}
