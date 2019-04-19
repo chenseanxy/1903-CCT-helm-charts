@@ -13,7 +13,6 @@ spec:
     - port: 9092
       name: broker
       targetPort: 9092
-  clusterIP: None
   selector:
     app: {{ template "cp-kafka.name" . }}
     release: {{ .Release.Name }}
