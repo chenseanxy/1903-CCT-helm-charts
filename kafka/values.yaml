@@ -23,15 +23,13 @@ cp-zookeeper:
     ## Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots.
     dataLogDirSize: 10Gi
     # dataLogDirStorageClass: ""
-  resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  resources: 
+   limits:
+    cpu: 100m
+    memory: 256Mi
+   requests:
+    cpu: 10m
+    memory: 128Mi
 
 ## ------------------------------------------------------
 ## Kafka
@@ -51,15 +49,13 @@ cp-kafka:
     # storageClass: ""
     size: 5Gi
     disksPerBroker: 1
-  resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  resources: 
+   limits:
+    cpu: 200m
+    memory: 2048Mi
+   requests:
+    cpu: 10m
+    memory: 128Mi
 
 ## ------------------------------------------------------
 ## Schema Registry
@@ -74,13 +70,11 @@ cp-schema-registry:
   #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
   #  limits:
   #   cpu: 100m
-  #   memory: 128Mi
+  #   memory: 512Mi
   #  requests:
-  #   cpu: 100m
+  #   cpu: 10m
   #   memory: 128Mi
 
 ## ------------------------------------------------------
