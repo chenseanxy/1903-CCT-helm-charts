@@ -52,10 +52,12 @@ cp-kafka:
   resources: 
    limits:
     cpu: 200m
-    memory: 2048Mi
+    memory: 512Mi
    requests:
     cpu: 10m
     memory: 128Mi
+  nodeport:
+    enabled: true
 
 ## ------------------------------------------------------
 ## Schema Registry
