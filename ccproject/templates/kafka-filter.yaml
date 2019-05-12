@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "ccproject.fullname" . }}-kafka-filter
+  labels: 
+    app: {{ template "ccproject.name" . }}
+    chart: {{ template "ccproject.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    module: kafka-filter
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "ccproject.name" . }}
+      chart: {{ template "ccproject.chart" . }}
+      release: {{ .Release.Name }}
+      module: kafka-filter
+  replicas: {{ .Values.kafkaFilter.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "ccproject.name" . }}
+        chart: {{ template "ccproject.chart" . }}
+        release: {{ .Release.Name }}
+        module: kafka-filter
+    spec:
+      containers:
+      - name: {{ template "ccproject.fullname" . }}-kafka-filter
+        image: {{ .Values.image }}
+        {{- if .Values.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.kafkaFilter.resources | indent 10 }}
+        args:
+          - "--mode"
+          - "kafka-filter"
+          - "--kafka-server"
+          - "{{ .Values.kafka.server }}"
+          - "--kafka-topic"
+          - "{{ .Values.kafka.topic.raw }}"
+          - "--kafka-topic-filtered"
+          - "{{ .Values.kafka.topic.filtered }}"
+          - "--debug"
+          - "{{ .Values.debug }}"

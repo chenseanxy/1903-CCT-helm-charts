@@ -52,4 +52,4 @@ persistence:
 
 hbase:
   zookeeper:
-    quorum: "myzk-zookeeper"
+    quorum: "hbase-zk-zookeeper"

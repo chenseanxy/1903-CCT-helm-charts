@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "ccproject.fullname" . }}-json-kafka
+  labels: 
+    app: {{ template "ccproject.name" . }}
+    chart: {{ template "ccproject.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    module: json-kafka
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "ccproject.name" . }}
+      chart: {{ template "ccproject.chart" . }}
+      release: {{ .Release.Name }}
+      module: json-kafka
+  replicas: {{ default 3 .Values.jsonToKafka.replicas }}
+  template:
+    metadata:
+      labels:
+        release: {{ .Release.Name }}
+        chart: {{ template "ccproject.chart" . }}
+        app: {{ template "ccproject.name" . }}
+        module: json-kafka
+    spec:
+      containers:
+      - name: {{ template "ccproject.fullname" . }}-json-kafka
+        image: {{ .Values.image }}
+        {{- if .Values.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.jsonToKafka.resources | indent 10 }}
+        args:
+        - "--mode"
+        - "json-kafka"
+        - "--json-port"
+        - "{{ .Values.jsonToKafka.service.port }}"
+        - "--kafka-server"
+        - "{{ .Values.kafka.server }}"
+        - "--kafka-topic"
+        - "{{ .Values.kafka.topic.raw }}"
+        - "--debug"
+        - "{{ .Values.debug }}"
+        ports:
+        - containerPort: {{ .Values.jsonToKafka.service.port }}
+
+

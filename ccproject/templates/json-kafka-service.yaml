@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "ccproject.fullname" . }}-json-kafka
+  labels: 
+    app: {{ template "ccproject.name" . }}
+    chart: {{ template "ccproject.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.jsonToKafka.service.type }}
+  ports:
+  - name: json-listener
+    port: {{ .Values.jsonToKafka.service.port }}
+    {{- if eq .Values.jsonToKafka.service.type "NodePort" }}
+    nodePort: {{ .Values.jsonToKafka.service.nodePort }} 
+    {{- end }}
+  selector:
+    release: {{ .Release.Name }}
+    chart: {{ template "ccproject.chart" . }}
+    app: {{ template "ccproject.name" . }}
+    module: json-kafka

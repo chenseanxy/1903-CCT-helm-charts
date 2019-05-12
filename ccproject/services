@@ -1,0 +1,4 @@
+kfk-cp-kafka-headless:9092
+
+redis-master.default.svc.cluster.local:6379
+

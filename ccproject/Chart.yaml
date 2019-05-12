@@ -1,0 +1,4 @@
+apiVersion: v1
+name: ccproject
+version: 1.0.0
+description: Chart to deploy the whole ccproject pipeline

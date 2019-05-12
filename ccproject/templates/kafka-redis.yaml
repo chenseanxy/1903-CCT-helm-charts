@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "ccproject.fullname" . }}-kafka-redis
+  labels: 
+    app: {{ template "ccproject.name" . }}
+    chart: {{ template "ccproject.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    module: kafka-redis
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "ccproject.name" . }}
+      chart: {{ template "ccproject.chart" . }}
+      release: {{ .Release.Name }}
+      module: kafka-redis
+  replicas: {{ .Values.kafkaRedis.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "ccproject.name" . }}
+        chart: {{ template "ccproject.chart" . }}
+        release: {{ .Release.Name }}
+        module: kafka-redis
+    spec:
+      containers:
+      - name: {{ template "ccproject.fullname" . }}-kafka-redis
+        image: {{ .Values.image }}
+        {{- if .Values.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.kafkaRedis.resources | indent 10 }}
+        args:
+          - "--mode"
+          - "kafka-redis"
+          - "--kafka-server"
+          - "{{ .Values.kafka.server }}"
+          - "--kafka-topic-filtered"
+          - "{{ .Values.kafka.topic.filtered }}"
+          - "--redis-server"
+          - "{{ .Values.redis.server }}"
+          - "--redis-port"
+          - "{{ .Values.redis.port }}"
+          - "--redis-key"
+          - "{{ .Values.redis.key }}"
+          - "--redis-channel"
+          - "{{ .Values.redis.channel }}"
+          - "--debug"
+          - "{{ .Values.debug }}"

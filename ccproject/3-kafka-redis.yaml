@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-redis
+spec:
+  selector:
+    matchLabels:
+      app: kafka-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka-redis
+    spec:
+      containers:
+      - name: kafka-redis
+        image: gcr.io/ccproject-k8s/ccproject@sha256:e29baa447a942b706ae8a1db145aba51329c0bdd457beb5750b404c9f0f7476d
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 1024Mi
+        args:
+          - "--mode"
+          - "kafka-redis"
+          - "--kafka-server"
+          - "kfk-cp-kafka-headless:9092"
+          - "--kafka-topic-filtered"
+          - "main-filtered"
+          - "--kafka-groupid"
+          - "0"
+          - "--debug"
+          - "true"

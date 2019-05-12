@@ -1,0 +1,58 @@
+image: gcr.io/ccproject-k8s/ccproject@sha256:1a12cccbdbddda2730c8e02bdb7e9147162f7d3778b93670cb788c5a8260c078  
+
+debug: true
+
+kafka:
+    server: kfk-cp-kafka-headless:9092
+    topic: 
+        raw: main
+        filtered: main-filtered
+
+redis:
+    server: redis-master.default.svc.cluster.local
+    port: 6379
+    key: XGFwZtvUgSzwJuKTGgXWzWTu8kvE78bW
+    channel: main
+
+jsonToKafka:
+    replicas: 5
+    service:
+        port: 5600
+        type: LoadBalancer
+    resources:
+        requests:
+            cpu: 10m
+            memory: 50Mi
+        limits:
+            cpu: 200m
+            memory: 1024Mi
+
+kafkaFilter:
+    replicas: 5
+    resources:
+        requests:
+            cpu: 10m
+            memory: 50Mi
+        limits:
+            cpu: 200m
+            memory: 1024Mi
+
+kafkaRedis:
+    replicas: 1
+    resources:
+        requests:
+            cpu: 10m
+            memory: 50Mi
+        limits:
+            cpu: 200m
+            memory: 1024Mi
+
+redisHbase:
+    replicas: 1
+    resources:
+        requests:
+            cpu: 10m
+            memory: 50Mi
+        limits:
+            cpu: 200m
+            memory: 1024Mi

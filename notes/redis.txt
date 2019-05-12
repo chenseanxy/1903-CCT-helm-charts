@@ -1,0 +1,67 @@
+NAME:   redis
+LAST DEPLOYED: Tue May  7 19:26:17 2019
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/Secret
+NAME   TYPE    DATA  AGE
+redis  Opaque  1     2s
+
+==> v1/ConfigMap
+NAME          DATA  AGE
+redis         3     2s
+redis-health  3     2s
+
+==> v1/Service
+NAME          TYPE          CLUSTER-IP    EXTERNAL-IP  PORT(S)         AGE
+redis-master  LoadBalancer  10.39.243.11  <pending>    6379:32420/TCP  2s
+redis-slave   ClusterIP     10.39.240.28  <none>       6379/TCP        2s
+
+==> v1beta1/Deployment
+NAME         DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+redis-slave  3        3        3           0          2s
+
+==> v1beta2/StatefulSet
+NAME          DESIRED  CURRENT  AGE
+redis-master  1        1        2s
+
+==> v1/Pod(related)
+NAME                          READY  STATUS             RESTARTS  AGE
+redis-slave-564f68cfbc-8j4p5  0/1    ContainerCreating  0         2s
+redis-slave-564f68cfbc-bwgdt  0/1    ContainerCreating  0         2s
+redis-slave-564f68cfbc-qrthp  0/1    ContainerCreating  0         2s
+redis-master-0                0/1    ContainerCreating  0         2s
+
+
+NOTES:
+** Please be patient while the chart is being deployed **
+Redis can be accessed via port 6379 on the following DNS names from within your cluster:
+
+redis-master.default.svc.cluster.local for read/write operations
+redis-slave.default.svc.cluster.local for read-only operations
+
+
+To get your password run:
+
+    export REDIS_PASSWORD=$(kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode)
+
+To connect to your Redis server:
+
+1. Run a Redis pod that you can use as a client:
+
+   kubectl run --namespace default redis-client --rm --tty -i --restart='Never' \
+    --env REDIS_PASSWORD=$REDIS_PASSWORD \
+   --image docker.io/bitnami/redis:4.0.14 -- bash
+
+2. Connect using the Redis CLI:
+   redis-cli -h redis-master -a $REDIS_PASSWORD
+   redis-cli -h redis-slave -a $REDIS_PASSWORD
+
+To connect to your database from outside the cluster execute the following commands:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace default -w redis'
+
+    export SERVICE_IP=$(kubectl get svc --namespace default redis --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}")
+    redis-cli -h $SERVICE_IP -p  -a $REDIS_PASSWORD

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "ccproject.fullname" . }}-redis-hbase
+  labels: 
+    app: {{ template "ccproject.name" . }}
+    chart: {{ template "ccproject.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    module: redis-hbase
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "ccproject.name" . }}
+      chart: {{ template "ccproject.chart" . }}
+      release: {{ .Release.Name }}
+      module: redis-hbase
+  replicas: {{ .Values.redisHbase.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "ccproject.name" . }}
+        chart: {{ template "ccproject.chart" . }}
+        release: {{ .Release.Name }}
+        module: redis-hbase
+    spec:
+      containers:
+      - name: {{ template "ccproject.fullname" . }}-redis-hbase
+        image: {{ .Values.image }}
+        {{- if .Values.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.redisHbase.resources | indent 10 }}
+        args:
+          - "--mode"
+          - "redis-hbase"
+          - "--redis-server"
+          - "{{ .Values.redis.server }}"
+          - "--redis-port"
+          - "{{ .Values.redis.port }}"
+          - "--redis-key"
+          - "{{ .Values.redis.key }}"
+          - "--redis-channel"
+          - "{{ .Values.redis.channel }}"
+          - "--debug"
+          - "{{ .Values.debug }}"
