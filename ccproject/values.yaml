@@ -1,5 +1,4 @@
-image: gcr.io/ccproject-k8s/ccproject@sha256:1a12cccbdbddda2730c8e02bdb7e9147162f7d3778b93670cb788c5a8260c078  
-
+image: gcr.io/ccproject-k8s/ccproject:latest
 debug: true
 
 kafka:
@@ -14,8 +13,13 @@ redis:
     key: XGFwZtvUgSzwJuKTGgXWzWTu8kvE78bW
     channel: main
 
+hbase:
+    server: hbase-hbase-master:16000
+    family: info
+    table: Records
+
 jsonToKafka:
-    replicas: 5
+    replicas: 3
     service:
         port: 5600
         type: LoadBalancer
@@ -24,17 +28,17 @@ jsonToKafka:
             cpu: 10m
             memory: 50Mi
         limits:
-            cpu: 200m
+            cpu: 1000m
             memory: 1024Mi
 
 kafkaFilter:
-    replicas: 5
+    replicas: 1
     resources:
         requests:
             cpu: 10m
             memory: 50Mi
         limits:
-            cpu: 200m
+            cpu: 1000m
             memory: 1024Mi
 
 kafkaRedis:
@@ -44,7 +48,7 @@ kafkaRedis:
             cpu: 10m
             memory: 50Mi
         limits:
-            cpu: 200m
+            cpu: 1000m
             memory: 1024Mi
 
 redisHbase:
@@ -54,5 +58,5 @@ redisHbase:
             cpu: 10m
             memory: 50Mi
         limits:
-            cpu: 200m
+            cpu: 1000m
             memory: 1024Mi

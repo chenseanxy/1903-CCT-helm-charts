@@ -1,8 +1,0 @@
-NOTES:
-Thank you for installing ZooKeeper on your Kubernetes cluster. More information
-about ZooKeeper can be found at https://zookeeper.apache.org/doc/current/
-
-Your connection string should look like:
-  hbase-zk-zookeeper-0.hbase-zk-zookeeper-headless:2181,hbase-zk-zookeeper-1.hbase-zk-zookeeper-headless:2181,...
-
-You can also use the client service hbase-zk-zookeeper:2181 to connect to an available ZooKeeper server.

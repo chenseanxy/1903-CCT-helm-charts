@@ -31,10 +31,10 @@ hdfs:
 
     resources:
       requests:
-        memory: "256Mi"
-        cpu: "10m"
+        memory: "4096Mi"
+        cpu: "1000m"
       limits:
-        memory: "2048Mi"
+        memory: "4096Mi"
         cpu: "1000m"
 
 persistence:
@@ -51,5 +51,7 @@ persistence:
     size: 200Gi
 
 hbase:
+  hmaster:
+    replicas: 2
   zookeeper:
     quorum: "hbase-zk-zookeeper"

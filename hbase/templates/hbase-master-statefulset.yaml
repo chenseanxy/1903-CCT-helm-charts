@@ -12,7 +12,7 @@ metadata:
     component: hbase-master
 spec:
   serviceName: {{ template "hbase.name" . }}-hbase-master
-  replicas: 1
+  replicas: {{ .Values.hbase.hmaster.replicas }}
   template:
     metadata:
       labels:

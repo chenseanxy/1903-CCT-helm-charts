@@ -43,7 +43,7 @@ cp-kafka:
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
   #  - name: "regcred"
-  heapOptions: "-Xms512M -Xmx512M"
+  heapOptions: "-Xms1024M -Xmx1024M"
   persistence:
     enabled: false
     # storageClass: ""
@@ -51,11 +51,11 @@ cp-kafka:
     disksPerBroker: 1
   resources: 
    limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 1000m
+    memory: 1024Mi
    requests:
-    cpu: 10m
-    memory: 128Mi
+    cpu: 1000m
+    memory: 1024Mi
   nodeport:
     enabled: false
 
